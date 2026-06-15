@@ -13,20 +13,22 @@
       <div class="header-icon">🌦️</div>
       <h1 id="app-title">Ogbomoso Weather Alert</h1>
       <p id="app-sub">For Farmers, Traders & Okada Riders</p>
-      
       <div class="lang-btns">
         <button id="btn-en" class="lang-btn active" onclick="setLang('en')">English</button>
         <button id="btn-yo" class="lang-btn" onclick="setLang('yo')">Yorùbá</button>
       </div>
     </header>
 
+    <!-- 5 TABS — added Register tab -->
     <nav class="tabs">
-      <button class="tab-btn active" id="tabl-weather" onclick="showTab('weather', this)">Weather</button>
-      <button class="tab-btn" id="tabl-farmers" onclick="showTab('farmers', this)">Farmers</button>
-      <button class="tab-btn" id="tabl-others" onclick="showTab('others', this)">Traders & Riders</button>
-      <button class="tab-btn" id="tabl-send" onclick="showTab('send', this)">Send Alert</button>
+      <button class="tab-btn active" id="tabl-weather" onclick="showTab('weather', this)">🌤️ Weather</button>
+      <button class="tab-btn" id="tabl-farmers" onclick="showTab('farmers', this)">🌾 Farmers</button>
+      <button class="tab-btn" id="tabl-others" onclick="showTab('others', this)">🛒 Traders</button>
+      <button class="tab-btn" id="tabl-send" onclick="showTab('send', this)">📲 Send</button>
+      <button class="tab-btn reg-tab-btn" id="tabl-register" onclick="showTab('register', this)">📋 Register</button>
     </nav>
 
+    <!-- ======== TAB 1: WEATHER ======== -->
     <div id="tab-weather" class="tab-page">
       <div class="weather-card">
         <div class="weather-top">
@@ -40,7 +42,6 @@
             <div class="cur-time" id="cur-time">00:00</div>
           </div>
         </div>
-
         <div class="forecast-row" id="forecast-row">
           <div class="forecast-day skeleton">...</div>
           <div class="forecast-day skeleton">...</div>
@@ -85,6 +86,7 @@
       </div>
     </div>
 
+    <!-- ======== TAB 2: FARMERS ======== -->
     <div id="tab-farmers" class="tab-page hidden">
       <h2 class="section-title" id="farmer-title">Farmer Alerts — All 5 LGAs</h2>
       <p class="section-sub" id="farmer-sub">Tap any LGA to see crop-specific advice</p>
@@ -99,7 +101,7 @@
         </div>
         <div class="calendar-content-box">
           <span class="calendar-month-badge" id="current-month-display">...</span>
-          <p class="calendar-crops-text" id="seasonal-crops-list" style="margin-top: 8px;">Loading dynamic cycle suggestions...</p>
+          <p class="calendar-crops-text" id="seasonal-crops-list" style="margin-top:8px;">Loading...</p>
         </div>
       </div>
 
@@ -189,6 +191,7 @@
       </div>
     </div>
 
+    <!-- ======== TAB 3: TRADERS & RIDERS ======== -->
     <div id="tab-others" class="tab-page hidden">
       <div class="group-card">
         <div class="group-top">
@@ -216,14 +219,15 @@
         <span class="wind-icon">💨</span>
         <div>
           <div class="wind-title" id="wind-title">Wind Warning — All Groups</div>
-          <p class="alert-msg" id="msg-wind" style="padding-top:0; color:#92400e;"></p>
+          <p class="alert-msg" id="msg-wind" style="padding-top:0;color:#92400e;"></p>
         </div>
       </div>
     </div>
 
+    <!-- ======== TAB 4: SEND ALERT ======== -->
     <div id="tab-send" class="tab-page hidden">
       <h2 class="section-title" id="send-title">Send Weather Alert</h2>
-      
+
       <div class="send-card">
         <div class="form-group">
           <label id="fl-group">Select who to alert</label>
@@ -240,7 +244,7 @@
 
         <div class="form-group">
           <label id="fl-phone">Phone number (with country code)</label>
-          <input type="tel" id="inp-phone" value="234" placeholder="e.g. 2348012345678">
+          <input type="tel" id="inp-phone" value="+234" placeholder="e.g. +2348012345678">
         </div>
 
         <div class="form-group">
@@ -267,45 +271,157 @@
         </div>
       </div>
 
-      <div class="send-card" style="margin-top: 20px;">
-        <h2 class="section-title" id="reg-title">Device Profile Settings</h2>
-        <p class="section-sub" id="reg-sub">Save your configuration profiles locally to this mobile phone</p>
+      <p class="twilio-note" id="twilio-note" style="margin-top:15px;">
+        WhatsApp opens a pre-filled message. SMS via Twilio needs backend setup.
+      </p>
+    </div>
 
-        <form id="reg-form" onsubmit="handleRegistration(event)">
+    <!-- ======== TAB 5: REGISTER ======== -->
+    <div id="tab-register" class="tab-page hidden">
+
+      <!-- SUCCESS SCREEN — hidden until form submitted -->
+      <div class="reg-success-screen hidden" id="reg-success-screen">
+        <div class="reg-success-icon">🎉</div>
+        <div class="reg-success-title" id="reg-ok-title">
+          Registration Successful!
+        </div>
+        <div class="reg-success-msg" id="reg-ok-msg">
+          Welcome to Ogbomoso Weather Alert!
+          Your details have been saved.
+          Share this app with your friends and family!
+        </div>
+        <div class="reg-count-box">
+          <div class="reg-count-label">You are registered user</div>
+          <div class="reg-count-num" id="reg-count-display">#—</div>
+        </div>
+        <!-- Share on WhatsApp after registering -->
+        <button class="btn btn-whatsapp reg-share-btn" onclick="shareAppOnWhatsApp()">
+          📲 Share App with Friends on WhatsApp
+        </button>
+        <button class="btn btn-sms reg-again-btn" onclick="registerAnother()">
+          ➕ Register Another Person
+        </button>
+      </div>
+
+      <!-- REGISTRATION FORM -->
+      <div id="reg-form-wrap">
+
+        <div class="reg-hero">
+          <div class="reg-hero-icon">📋</div>
+          <div class="reg-hero-title" id="reg-title">Register for Free Daily Alerts</div>
+          <div class="reg-hero-sub" id="reg-sub">
+            Join the Ogbomoso community. Get daily weather alerts, 
+            farming advice, and safety tips sent to you free.
+          </div>
+        </div>
+
+        <!-- STATS BAR -->
+        <div class="reg-stats-bar">
+          <div class="reg-stat">
+            <div class="reg-stat-num" id="reg-stat-count">0</div>
+            <div class="reg-stat-label">Registered</div>
+          </div>
+          <div class="reg-stat">
+            <div class="reg-stat-num">5</div>
+            <div class="reg-stat-label">LGAs Covered</div>
+          </div>
+          <div class="reg-stat">
+            <div class="reg-stat-num">FREE</div>
+            <div class="reg-stat-label">Always</div>
+          </div>
+        </div>
+
+        <div class="send-card">
+
+          <!-- FULL NAME -->
           <div class="form-group">
-            <label for="reg-name" id="rl-name">Full Name</label>
-            <input type="text" id="reg-name" placeholder="Enter your full name" required>
+            <label id="rl-name">Full Name *</label>
+            <input type="text" id="reg-name"
+                   placeholder="e.g. Abiodun Lawal" />
           </div>
 
+          <!-- WHATSAPP NUMBER -->
           <div class="form-group">
-            <label for="reg-phone" id="rl-phone">Mobile Phone</label>
-            <input type="tel" id="reg-phone" placeholder="e.g. +2348012345678" required>
+            <label id="rl-phone">WhatsApp Number *</label>
+            <input type="tel" id="reg-phone"
+                   placeholder="e.g. 08012345678" />
           </div>
 
+          <!-- LGA -->
           <div class="form-group">
-            <label for="reg-lga" id="rl-lga">Primary Location (LGA)</label>
-            <select id="reg-lga" required>
-              <option value="" disabled selected>Select your local LGA</option>
-              <option value="north">Ogbomoso North</option>
-              <option value="south">Ogbomoso South</option>
-              <option value="surulere">Surulere</option>
-              <option value="oriire">Oriire</option>
-              <option value="ogooluwa">Ogo-Oluwa</option>
+            <label id="rl-lga">Your LGA / Area *</label>
+            <select id="reg-lga">
+              <option value="">-- Select your area --</option>
+              <option value="Ogbomoso North">Ogbomoso North</option>
+              <option value="Ogbomoso South">Ogbomoso South</option>
+              <option value="Surulere LGA">Surulere LGA</option>
+              <option value="Oriire LGA">Oriire LGA</option>
+              <option value="Ogo-Oluwa LGA">Ogo-Oluwa LGA</option>
+              <option value="Sango">Sango</option>
+              <option value="Takie">Takie</option>
+              <option value="Ijeru">Ijeru</option>
+              <option value="Isale Ora">Isale Ora</option>
+              <option value="Other">Other</option>
             </select>
           </div>
 
-          <button type="submit" class="btn btn-sms" id="btn-reg-sub" style="width: 100%; margin-top: 10px;">Save Profile Settings</button>
-        </form>
+          <!-- OCCUPATION -->
+          <div class="form-group">
+            <label id="rl-occ">Your Occupation *</label>
+            <select id="reg-occ">
+              <option value="">-- Select occupation --</option>
+              <option value="Farmer">🌾 Farmer</option>
+              <option value="Trader / Market seller">🛒 Trader / Market seller</option>
+              <option value="Motorcyclist (Okada)">🏍️ Motorcyclist (Okada)</option>
+              <option value="Student">🎓 Student</option>
+              <option value="Teacher">📚 Teacher</option>
+              <option value="Civil servant">🏛️ Civil servant</option>
+              <option value="Business owner">💼 Business owner</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
 
-        <div class="sent-notice hidden" id="reg-success">
-          <span>Settings saved locally to device storage memory!</span>
+          <!-- HOW DID YOU HEAR -->
+          <div class="form-group">
+            <label id="rl-heard">How did you hear about us?</label>
+            <select id="reg-heard">
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Friend or family">Friend or family</option>
+              <option value="Facebook">Facebook</option>
+              <option value="Radio">Radio</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- ERROR BOX -->
+          <div class="reg-error hidden" id="reg-error">
+            ⚠️ Please fill in all fields marked with *
+          </div>
+
+          <!-- SUBMIT BUTTON -->
+          <button class="btn btn-register"
+                  id="btn-reg-sub"
+                  onclick="handleRegistration(event)">
+            ✅ Register Now — It is Free!
+          </button>
+
+          <p class="reg-note" id="reg-note-text">
+            Your data is saved securely to our master database.
+            We will only use it to send you weather alerts. No spam.
+          </p>
+
         </div>
       </div>
 
-      <p class="twilio-note" id="twilio-note" style="margin-top: 15px;">WhatsApp opens a pre-filled message. SMS via Twilio needs backend setup.</p>
-    </div>
+      <!-- SUCCESS NOTICE (old inline one kept for compatibility) -->
+      <div class="sent-notice hidden" id="reg-success">
+        <span>Registration successful! Saved to master database.</span>
+      </div>
 
-  </div>
+    </div>
+    <!-- END TAB 5 -->
+
+  </div><!-- end .app -->
 
   <script src="app.js"></script>
 </body>
