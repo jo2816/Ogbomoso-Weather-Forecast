@@ -633,7 +633,7 @@ function shareAppOnWhatsApp() {
     '✅ Trader & Okada rider safety alerts\n' +
     '✅ Available in English & Yorùbá\n\n' +
     'It is completely FREE! Register and use it here:\n' +
-    'https://ogbomoso-weather.netlify.app\n\n' +
+    'https://ogbomosoweather4cast.netlify.app/\n\n' +
     'Share with everyone in Ogbomoso! 🙏';
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
